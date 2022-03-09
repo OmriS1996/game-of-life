@@ -18,9 +18,7 @@ export default function GenZero(props) {
       } else {
         row[k] = 0;
       }
-      console.log(row);
     }
-    console.log(mainArray);
     mainArray[i] = row;
   }
 
