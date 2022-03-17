@@ -21,6 +21,5 @@ export default function GenZero(rulesObject) {
     }
     mainArray[i] = row;
   }
-  console.log(mainArray);
   return mainArray;
 }

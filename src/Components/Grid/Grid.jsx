@@ -5,14 +5,19 @@ import { useEffect, useState } from "react";
 
 export default function Grid(props) {
   const [mainArray, setMainArray] = useState([[]]);
+  const [generation, setGeneration] = useState(0);
 
   useEffect(() => {
     if (mainArray.length <= 1) {
       let temp2DArray = [[]];
+      let tempGeneration = 0;
       temp2DArray = GenZero(props.gameRules);
-      console.log(temp2DArray);
       setMainArray(temp2DArray);
-      //ConwayRules(temp2DArray);
+      setInterval(() => {
+        temp2DArray = ConwayRules(temp2DArray);
+        setMainArray(temp2DArray);
+        setGeneration(tempGeneration++);
+      }, 500);
     }
   });
 
