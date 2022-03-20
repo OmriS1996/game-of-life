@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       {gameRules.gameStart ? (
-        <Grid gameRules={gameRules} />
+        <Grid setGameRules={setGameRules} gameRules={gameRules} />
       ) : (
         <MainMenu setGameRules={setGameRules} />
       )}

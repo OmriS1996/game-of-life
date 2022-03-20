@@ -1,5 +1,4 @@
-export default function ConwayRules(array) {
-  console.log(array);
+export default function MainEngine(array, ruleSetFunction) {
   let nextArray = [[]];
 
   for (let i = 0; i < array.length; i++) {
@@ -24,15 +23,9 @@ export default function ConwayRules(array) {
       if (nextArray[i] === undefined) {
         nextArray[i] = [];
       }
-      if (array[i][k] === 1 && value >= 2 && value <= 3) {
-        nextArray[i][k] = 1;
-      } else if (array[i][k] === 0 && value === 3) {
-        nextArray[i][k] = 1;
-      } else {
-        nextArray[i][k] = 0;
-      }
+      nextArray[i][k] = ruleSetFunction(array[i][k], value);
     }
   }
-  console.log(nextArray);
+
   return nextArray;
 }

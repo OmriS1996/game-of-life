@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function MainMenu(props) {
   const [size, setSize] = useState("10");
   const [cellsAmount, setCellsAmount] = useState("medium");
   const [speed, setSpeed] = useState("normal");
   const [rules, setRules] = useState("conway");
-  const [activeWalls, setActiveWalls] = useState(false);
 
   function handleSize(e) {
     setSize(e.target.value);
@@ -23,17 +22,12 @@ export default function MainMenu(props) {
     setRules(e.target.value);
   }
 
-  function handleActiveWalls(e) {
-    setActiveWalls(!activeWalls);
-  }
-
   function handleStart() {
     let userChoice = {
       size: size,
       cellsAmount: cellsAmount,
       speed: speed,
       rules: rules,
-      activeWalls: activeWalls,
       gameStart: true,
     };
     props.setGameRules(userChoice);
@@ -42,7 +36,7 @@ export default function MainMenu(props) {
   return (
     <div className="mainMenu">
       <div>
-        <label for="gridSize">Grid size:</label>
+        <label htmlFor="gridSize">Grid size:</label>
 
         <select name="gridSize" value={size} onChange={handleSize}>
           <option value="6">6 x 6</option>
@@ -57,7 +51,7 @@ export default function MainMenu(props) {
         </select>
       </div>
       <div>
-        <label for="amountOfCells">Starting amount of cells:</label>
+        <label htmlFor="amountOfCells">Starting amount of cells:</label>
 
         <select
           name="amountOfCells"
@@ -70,7 +64,7 @@ export default function MainMenu(props) {
         </select>
       </div>
       <div>
-        <label for="speed">Evolution speed:</label>
+        <label htmlFor="speed">Evolution speed:</label>
 
         <select name="speed" value={speed} onChange={handleSpeed}>
           <option value="verySlow">Very Slow</option>
@@ -82,24 +76,13 @@ export default function MainMenu(props) {
         </select>
       </div>
       <div>
-        <label for="rules">Ruleset:</label>
+        <label htmlFor="rules">Ruleset:</label>
 
         <select name="rules" value={rules} onChange={handleRules}>
           <option value="conway">Conway (Original)</option>
           <option value="hyperactive">Hyperactive</option>
-
-          <option value="highLife">High Life</option>
-          <option value="spontanous">Spontanous</option>
+          <option value="spontaneous">Spontaneous</option>
         </select>
-      </div>
-      <div>
-        <label for="activeWalls">Active walls?</label>
-        <input
-          type="checkbox"
-          name="activeWalls"
-          value={activeWalls}
-          onChange={handleActiveWalls}
-        />
       </div>
       <div>
         <button onClick={handleStart}>Start Game</button>
