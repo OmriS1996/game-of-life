@@ -1,10 +1,8 @@
 import "./Grid.css";
-import GenZero from "../../Components/Engine/MainEngine/GenZero";
-import MainEngine from "../../Components/Engine/MainEngine/MainEngine";
-import ConwayRules from "../../Components/Engine/Rules/ConwayRules";
-import HyperactiveRules from "../../Components/Engine/Rules/HyperactiveRules";
-import Spontaneous from "../../Components/Engine/Rules/Spontaneous";
+import { Engine } from "../../Components/Engine/MainEngine/Engine";
 import { useEffect, useRef, useState } from "react";
+
+const engine: Engine = new Engine();
 
 export default function Grid(props) {
   const [mainArray, setMainArray] = useState([[]]);
@@ -15,6 +13,19 @@ export default function Grid(props) {
   let interval = useRef(null);
   let temp2DArray = [[]];
   let arrayCheck = [];
+
+  function probabilty(probabilityString) {
+    let probabilityNum;
+    if (probabilityString === "low") {
+      probabilityNum = 0.1;
+    } else if (probabilityString === "medium") {
+      probabilityNum = 0.3;
+    } else if (probabilityString === "large") {
+      probabilityNum = 0.5;
+    }
+
+    return probabilityNum;
+  }
 
   function gameSpeed(speed) {
     if (speed === "verySlow") {
@@ -33,11 +44,11 @@ export default function Grid(props) {
 
   function ruleSwitch(ruleset) {
     if (ruleset === "conway") {
-      return ConwayRules;
+      return 0;
     } else if (ruleset === "hyperactive") {
-      return HyperactiveRules;
+      return 1;
     } else if (ruleset === "spontaneous") {
-      return Spontaneous;
+      return 2;
     }
   }
 
@@ -61,29 +72,32 @@ export default function Grid(props) {
     if (mounted) {
       let tempGeneration = 0;
       let speed = gameSpeed(props.gameRules.speed);
-      let ruleSet = ruleSwitch(props.gameRules.rules);
-      temp2DArray = GenZero(props.gameRules);
+
+      engine.initialize(
+        props.gameRules.cellsAmount,
+        props.gameRules.size,
+        props.gameRules.rules
+      );
+      temp2DArray = engine.showGrid();
       setMainArray(temp2DArray);
       setGeneration(tempGeneration++);
       interval.current = setInterval(() => {
-        temp2DArray = MainEngine(temp2DArray, ruleSet);
+        engine.fullIteration();
+        temp2DArray = engine.showGrid();
+        console.log(temp2DArray);
         stableStateCheck(temp2DArray, tempGeneration);
         setMainArray(temp2DArray);
         setGeneration(tempGeneration++);
-      }, speed);
+      }, props.gameRules.speed);
     }
     return function cleanup() {
       mounted = false;
     };
   }, []);
 
-  function changeStatus(row, item) {
-    temp2DArray = mainArray;
-    if (temp2DArray[row][item] === 1) {
-      temp2DArray[row][item] = 0;
-    } else if (temp2DArray[row][item] === 0) {
-      temp2DArray[row][item] = 1;
-    }
+  function changeStatus(row, column) {
+    engine.changeStatus(row, column);
+    temp2DArray = engine.showGrid();
     setMainArray(temp2DArray);
   }
 
