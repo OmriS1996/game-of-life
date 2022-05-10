@@ -14,44 +14,6 @@ export default function Grid(props) {
   let temp2DArray = [[]];
   let arrayCheck = [];
 
-  function probabilty(probabilityString) {
-    let probabilityNum;
-    if (probabilityString === "low") {
-      probabilityNum = 0.1;
-    } else if (probabilityString === "medium") {
-      probabilityNum = 0.3;
-    } else if (probabilityString === "large") {
-      probabilityNum = 0.5;
-    }
-
-    return probabilityNum;
-  }
-
-  function gameSpeed(speed) {
-    if (speed === "verySlow") {
-      speed = 2000;
-    } else if (speed === "slow") {
-      speed = 1000;
-    } else if (speed === "normal") {
-      speed = 500;
-    } else if (speed === "fast") {
-      speed = 200;
-    } else if (speed === "veryFast") {
-      speed = 0;
-    }
-    return speed;
-  }
-
-  function ruleSwitch(ruleset) {
-    if (ruleset === "conway") {
-      return 0;
-    } else if (ruleset === "hyperactive") {
-      return 1;
-    } else if (ruleset === "spontaneous") {
-      return 2;
-    }
-  }
-
   function stableStateCheck(array, generation) {
     arrayCheck.push(array);
     if (generation >= 3) {
@@ -67,12 +29,21 @@ export default function Grid(props) {
     }
   }
 
+  function changeStatus(row, column) {
+    engine.changeStatus(row, column);
+    temp2DArray = engine.showGrid();
+    setMainArray(temp2DArray);
+  }
+
+  function returnToMenu() {
+    clearInterval(interval.current);
+    props.setGameRules({ gameStart: false });
+  }
+
   useEffect(() => {
     let mounted = true;
     if (mounted) {
       let tempGeneration = 0;
-      let speed = gameSpeed(props.gameRules.speed);
-
       engine.initialize(
         props.gameRules.cellsAmount,
         props.gameRules.size,
@@ -84,7 +55,6 @@ export default function Grid(props) {
       interval.current = setInterval(() => {
         engine.fullIteration();
         temp2DArray = engine.showGrid();
-        console.log(temp2DArray);
         stableStateCheck(temp2DArray, tempGeneration);
         setMainArray(temp2DArray);
         setGeneration(tempGeneration++);
@@ -94,17 +64,6 @@ export default function Grid(props) {
       mounted = false;
     };
   }, []);
-
-  function changeStatus(row, column) {
-    engine.changeStatus(row, column);
-    temp2DArray = engine.showGrid();
-    setMainArray(temp2DArray);
-  }
-
-  function returnToMenu() {
-    clearInterval(interval.current);
-    props.setGameRules({ gameStart: false });
-  }
 
   return (
     <>
