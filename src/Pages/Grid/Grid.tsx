@@ -67,27 +67,26 @@ export default function Grid(props) {
 
   return (
     <>
-      <div>
-        <table className="grid">
-          <tbody>
-            {mainArray.map((y, indexY) => (
-              <tr className="row" key={`${indexY}`}>
-                {y.map((x, indexX) => (
-                  <td
-                    onClick={() => changeStatus(indexY, indexX)}
-                    className={x === 1 ? aliveClass : deadClass}
-                    key={`${indexX},${indexY}`}
-                  >
-                    {x}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div>Generation: {generation}</div>
-        <button onClick={returnToMenu}>Return To Main Menu</button>
-        <div>{stableState ? "stable" : "running"}</div>
+      <div className="mainContainer">
+        <div className="grid">
+          {mainArray.map((y, indexY) => (
+            <div className="row" key={`${indexY}`}>
+              {y.map((x, indexX) => (
+                <div
+                  onClick={() => changeStatus(indexY, indexX)}
+                  className={x === 1 ? aliveClass : deadClass}
+                  key={`${indexX},${indexY}`}
+                ></div>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        <div className="gameInfo">
+          <div>Generation: {generation}</div>
+          <button onClick={returnToMenu}>Return To Main Menu</button>
+          <div>{stableState ? "stable" : "running"}</div>
+        </div>
       </div>
     </>
   );
