@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import MainMenu from "./Components/Main Menu/mainMenu";
-import Grid from "./Components/Grid/Grid";
+import MainMenu from "./Pages/MainMenu/mainMenu";
+import Grid from "./Pages/Grid/Grid";
 
 function App() {
   const [gameRules, setGameRules] = useState({ gameStart: false });

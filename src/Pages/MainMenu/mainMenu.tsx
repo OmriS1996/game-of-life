@@ -1,10 +1,17 @@
 import { useState } from "react";
+import { OptionsParser } from "../../Components/Engine/MainEngine/OptionsParser";
 
 export default function MainMenu(props) {
   const [size, setSize] = useState("10");
-  const [cellsAmount, setCellsAmount] = useState("medium");
-  const [speed, setSpeed] = useState("normal");
-  const [rules, setRules] = useState("conway");
+  const [cellsAmount, setCellsAmount] = useState<"low" | "medium" | "large">(
+    "medium"
+  );
+  const [speed, setSpeed] = useState<
+    "verySlow" | "slow" | "normal" | "fast" | "veryFast"
+  >("normal");
+  const [rules, setRules] = useState<"conway" | "hyperactive" | "spontaneous">(
+    "conway"
+  );
 
   function handleSize(e) {
     setSize(e.target.value);
@@ -23,13 +30,17 @@ export default function MainMenu(props) {
   }
 
   function handleStart() {
-    let userChoice = {
+    let userChoiceRaw = {
       size: size,
       cellsAmount: cellsAmount,
       speed: speed,
       rules: rules,
       gameStart: true,
     };
+
+    let optionsParser = new OptionsParser();
+    let userChoice = optionsParser.parse(userChoiceRaw);
+
     props.setGameRules(userChoice);
   }
 
